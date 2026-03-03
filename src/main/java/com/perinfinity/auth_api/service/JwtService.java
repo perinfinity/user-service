@@ -1,7 +1,7 @@
 package com.perinfinity.auth_api.service;
 
+import com.perinfinity.auth_api.exceptions.InvalidJwtKeyException;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -44,11 +44,7 @@ public class JwtService {
         return jwtExpiration;
     }
 
-    private String buildToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            long expiration
-    ) {
+    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -81,10 +77,12 @@ public class JwtService {
                 .getBody();
     }
 
-
-    private Key getSignInKey( ) {
-        byte[] key = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(key);
+    private Key getSignInKey() {
+        try {
+            byte[] key = Decoders.BASE64.decode(secretKey);
+            return Keys.hmacShaKeyFor(key);
+        } catch (Exception e) {
+            throw new InvalidJwtKeyException(e);
+        }
     }
-
 }

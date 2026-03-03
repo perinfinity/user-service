@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public Long id;
 
@@ -59,13 +59,10 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public enum Role {
-        VOLUNTEER, ORGANIZATION // ROLE_ORGANIZATION_ADMIN
-    }
-
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
@@ -75,8 +72,15 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //TODO: Add roles User and organization
-        return List.of();
+        if (role == Role.ADMIN) {
+            // L'admin hérite de tous les rôles
+            return List.of(
+                new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN"),
+                new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ORGANIZATION"),
+                new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_VOLUNTEER")
+            );
+        }
+        return List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override

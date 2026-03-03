@@ -1,5 +1,6 @@
 package com.perinfinity.auth_api.dtos;
 
+import com.perinfinity.auth_api.entities.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,8 @@ public class LoginResponseDto {
 
     private long expiresIn;
 
-    public String getToken() {
-        return token;
-    }
+    private String user;
+
+    private String role;
+
 }
