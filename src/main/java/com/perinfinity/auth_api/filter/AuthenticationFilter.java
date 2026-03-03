@@ -43,7 +43,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Extract JWT token from header
         String jwtToken = authorizationHeader.substring(7);
         final String userEmail = jwtService.extractUsername(jwtToken);
         try {

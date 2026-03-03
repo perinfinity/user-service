@@ -20,7 +20,7 @@ public class VerificationCodeService {
         LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(CODE_EXPIRATION_MINUTES);
         
         codeStorage.put(email, new CodeData(code, expirationTime));
-        log.info("Code de vérification généré pour : {}", email);
+        log.info("Verification code generated for: {}", email);
 
         return code;
     }
@@ -33,11 +33,11 @@ public class VerificationCodeService {
             LocalDateTime.now().isBefore(storedData.expirationTime)) {
 
             codeStorage.remove(email);
-            log.info("Code de vérification validé pour : {}", email);
+            log.info("Verification code verified for: {}", email);
             return true;
         }
 
-        log.warn("Code de vérification invalide ou expiré pour : {}", email);
+        log.warn("Invalid or expired verification code for: {}", email);
         return false;
     }
     

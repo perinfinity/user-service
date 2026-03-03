@@ -24,9 +24,9 @@ public class EmailService {
                     "Si vous n'avez pas demandé ce code, ignorez cet email.");
 
             mailSender.send(message);
-            log.info("Code de vérification envoyé à : {}", to);
+            log.info("Verification code sent to: {}", to);
         } catch (Exception e) {
-            log.error("Échec de l'envoi du code de vérification à : {}", to, e);
+            log.error("Failed to send verification code to: {}", to, e);
             throw new EmailSendException(to, e);
         }
     }
