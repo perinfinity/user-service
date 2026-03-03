@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserResponseDto {
-    private String username;
+    private String user;
     private String email;
     private String role;
     private String createdAt;
