@@ -24,7 +24,7 @@ public class OrganizationAuthService {
                 .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
 
         if (user.getRole() != Role.ORGANIZATION) {
-            throw new InvalidRoleException("Cet email n'est pas associé à une organisation");
+            throw new InvalidRoleException("This email is not associated with an organization");
         }
 
         authenticationService.sendVerificationCode(request.getEmail());
@@ -35,7 +35,7 @@ public class OrganizationAuthService {
                 .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
 
         if (user.getRole() != Role.ORGANIZATION) {
-            throw new InvalidRoleException("Cet email n'est pas associé à une organisation");
+            throw new InvalidRoleException("This email is not associated with an organization");
         }
 
         return authenticationService.authenticateWithCode(request.getEmail(), request.getCode());

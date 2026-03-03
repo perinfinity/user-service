@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
         ApiErrorResponse body = ApiErrorResponse.builder()
                 .status(HttpStatus.UNAUTHORIZED.value())
                 .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
-                .message("Email ou mot de passe incorrect")
+                .message("Invalid email or password")
                 .timestamp(LocalDateTime.now())
                 .build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
@@ -40,8 +40,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({DisabledException.class, LockedException.class})
     public ResponseEntity<ApiErrorResponse> handleAccountStatusException(Exception ex) {
         String message = ex instanceof DisabledException
-                ? "Votre compte est désactivé. Contactez l'administrateur."
-                : "Votre compte est verrouillé. Contactez l'administrateur.";
+                ? "Your account is disabled. Please contact the administrator."
+                : "Your account is locked. Please contact the administrator.";
         ApiErrorResponse body = ApiErrorResponse.builder()
                 .status(HttpStatus.FORBIDDEN.value())
                 .error(HttpStatus.FORBIDDEN.getReasonPhrase())
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
         ApiErrorResponse body = ApiErrorResponse.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
-                .message("Une erreur interne est survenue")
+                .message("An internal error occurred")
                 .timestamp(LocalDateTime.now())
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);

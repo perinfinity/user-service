@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 public class EmailAlreadyUsedException extends AuthApiException {
 
     public EmailAlreadyUsedException(String email) {
-        super("L'email '" + email + "' est déjà utilisé par un autre utilisateur", HttpStatus.CONFLICT);
+        super("Email '" + email + "' is already in use", HttpStatus.CONFLICT);
     }
 }

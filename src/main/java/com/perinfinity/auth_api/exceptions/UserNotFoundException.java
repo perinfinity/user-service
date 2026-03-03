@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 public class UserNotFoundException extends AuthApiException {
 
     public UserNotFoundException(String email) {
-        super("Aucun utilisateur trouvé avec l'email : " + email, HttpStatus.NOT_FOUND);
+        super("No user found with email: " + email, HttpStatus.NOT_FOUND);
     }
 }

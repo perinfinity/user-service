@@ -63,7 +63,7 @@ class GlobalExceptionHandlerTest {
         mockMvc.perform(get("/test-ex/bad-credentials").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.status").value(401))
-                .andExpect(jsonPath("$.message").value("Email ou mot de passe incorrect"));
+                .andExpect(jsonPath("$.message").value("Invalid email or password"));
     }
 
     @Test
@@ -85,7 +85,7 @@ class GlobalExceptionHandlerTest {
         mockMvc.perform(get("/test-ex/generic").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.status").value(500))
-                .andExpect(jsonPath("$.message").value("Une erreur interne est survenue"));
+                .andExpect(jsonPath("$.message").value("An internal error occurred"));
     }
 
     @RestController

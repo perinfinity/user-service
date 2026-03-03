@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 public class InvalidVerificationCodeException extends AuthApiException {
 
     public InvalidVerificationCodeException() {
-        super("Code de vérification invalide", HttpStatus.UNAUTHORIZED);
+        super("Invalid verification code", HttpStatus.UNAUTHORIZED);
     }
 }
