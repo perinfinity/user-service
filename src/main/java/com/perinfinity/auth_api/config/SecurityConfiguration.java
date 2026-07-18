@@ -3,6 +3,7 @@ package com.perinfinity.auth_api.config;
 import com.perinfinity.auth_api.filter.AuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,8 +33,15 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/signup", "/api/auth/login").permitAll()
-                        .requestMatchers("/api/auth/send-code", "/api/auth/verify-code").permitAll()
+                        .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/auth/logout").permitAll()
+                        .requestMatchers("/api/auth/send-code", "/api/auth/verify-code", "/api/auth/reset-password").permitAll()
+                        .requestMatchers("/api/v1/countries").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/volunteers/by-id/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/volunteers/{username}").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/volunteers/me").hasRole("VOLUNTEER")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/volunteers/me").hasRole("VOLUNTEER")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/organizations/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/organizations/me").hasRole("ORGANIZATION")
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html","/docs/**", "/api-docs/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

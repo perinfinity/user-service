@@ -15,8 +15,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -91,5 +93,27 @@ class AuthenticationServiceTest {
 
         assertThatThrownBy(() -> authenticationService.signup(dto))
                 .isInstanceOf(EmailAlreadyUsedException.class);
+    }
+
+    @Test
+    void signup_shouldMapProfileFields_whenProvided() {
+        com.perinfinity.auth_api.dtos.RegisterUserDto dto = new com.perinfinity.auth_api.dtos.RegisterUserDto();
+        dto.setEmail("new@test.com");
+        dto.setPassword("pass");
+        dto.setCountry("CM");
+        dto.setCity("Douala");
+        dto.setProfileImage("https://cdn.example.com/avatar.jpg");
+        dto.setPreferredCategories(List.of("Environnement", "Éducation"));
+
+        given(userRepository.existsByEmail("new@test.com")).willReturn(false);
+        given(passwordEncoder.encode("pass")).willReturn("encoded");
+        given(userRepository.save(any(User.class))).willAnswer(inv -> inv.getArgument(0));
+
+        User saved = authenticationService.signup(dto);
+
+        assertThat(saved.getCountry()).isEqualTo("CM");
+        assertThat(saved.getCity()).isEqualTo("Douala");
+        assertThat(saved.getProfileImage()).isEqualTo("https://cdn.example.com/avatar.jpg");
+        assertThat(saved.getPreferredCategories()).containsExactly("Environnement", "Éducation");
     }
 }

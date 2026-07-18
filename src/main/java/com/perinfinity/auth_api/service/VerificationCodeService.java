@@ -21,6 +21,7 @@ public class VerificationCodeService {
         
         codeStorage.put(email, new CodeData(code, expirationTime));
         log.info("Verification code generated for: {}", email);
+        log.info("[DEV] Verification code for {}: {}", email, code); // TODO: remove before production
 
         return code;
     }

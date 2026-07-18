@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -52,6 +53,33 @@ public class User implements UserDetails {
 
     @Column(name = "phone", length = 20)
     private String phone;
+
+    @Column(name = "country", length = 2)
+    private String country;
+
+    @Column(name = "city", length = 100)
+    private String city;
+
+    @Column(name = "profile_image", length = 255)
+    private String profileImage;
+
+    @Column(name = "mission_statement", columnDefinition = "TEXT")
+    private String missionStatement;
+
+    @Column(name = "about", columnDefinition = "TEXT")
+    private String about;
+
+    @Column(name = "verified_badge")
+    private boolean verifiedBadge = false;
+
+    @Column(name = "completeness_score")
+    private int completenessScore = 0;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_preferred_categories", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "category", length = 100)
+    @Builder.Default
+    private List<String> preferredCategories = new ArrayList<>();
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

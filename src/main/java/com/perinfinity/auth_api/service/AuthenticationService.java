@@ -11,8 +11,10 @@ import com.perinfinity.auth_api.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AuthenticationService {
     private final UserRepository userRepository;
@@ -54,6 +56,10 @@ public class AuthenticationService {
                 .bio(registerUserDto.getBio())
                 .address(registerUserDto.getAddress())
                 .phone(registerUserDto.getPhone())
+                .country(registerUserDto.getCountry())
+                .city(registerUserDto.getCity())
+                .profileImage(registerUserDto.getProfileImage())
+                .preferredCategories(registerUserDto.getPreferredCategories())
                 .build();
 
         return userRepository.save(user);
@@ -76,7 +82,11 @@ public class AuthenticationService {
                 .orElseThrow(() -> new UserNotFoundException(email));
 
         String code = verificationCodeService.generateAndStoreCode(email);
-        emailService.sendVerificationCode(email, code);
+        try {
+            emailService.sendVerificationCode(email, code);
+        } catch (Exception e) {
+            log.warn("Email delivery failed for {} — code still valid (check server logs in dev): {}", email, e.getMessage());
+        }
     }
 
     public User authenticateWithCode(String email, String code) {

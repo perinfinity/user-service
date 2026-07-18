@@ -10,12 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VerifyCodeResponseDto {
-    private String token;
+    private Long userId;
     private String role;
     private String user;
     private String message;
     private boolean success;
 }
-
-
-
