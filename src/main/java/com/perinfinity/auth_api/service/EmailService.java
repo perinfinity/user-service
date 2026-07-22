@@ -37,4 +37,24 @@ public class EmailService {
             throw new EmailSendException(to, e);
         }
     }
+
+    /** Notifie le destinataire d'un nouveau message sur une candidature. */
+    public void sendNewMessageNotification(String to, String senderName, String opportunityTitle,
+                                           String preview, String threadUrl) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromAddress);
+            message.setTo(to);
+            message.setSubject("Nouveau message — " + opportunityTitle);
+            message.setText(senderName + " vous a envoyé un message concernant votre candidature \""
+                    + opportunityTitle + "\" :\n\n« " + preview + " »\n\n"
+                    + "Répondez sur la plateforme : " + threadUrl);
+
+            mailSender.send(message);
+            log.info("New-message notification sent to: {}", to);
+        } catch (Exception e) {
+            log.error("Failed to send new-message notification to: {}", to, e);
+            throw new EmailSendException(to, e);
+        }
+    }
 }
